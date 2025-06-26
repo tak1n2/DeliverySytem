@@ -1,0 +1,42 @@
+﻿@model IEnumerable<DeliverySytem.Models.Shop>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var count = 0;
+}
+
+<h1>Shops</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<div class="container">
+    <div class="row">
+        @foreach (var shop in Model)
+        {
+            if (count != 0 && count % 4 == 0)
+            {
+                @:</div><div class="row mt-3">
+            }
+
+            <div class="col-md-3">
+                <div class="card mb-4 shadow-sm">
+                    <img src="@shop.AvatarUrl" class="card-img-top" alt="@shop.ShopName" style="height:200px; object-fit:cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@shop.ShopName</h5>
+                        <p class="card-text">
+                            <strong>City:</strong> @shop.CityRowKey<br />
+                            <strong>Country:</strong> @shop.CountryRowKey
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            count++;
+        }
+    </div>
+</div>
