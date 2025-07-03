@@ -22,15 +22,30 @@
                 <span asp-validation-for="AvatarUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CityRowKey" class="control-label">City Row Key</label>
-                <input asp-for="CityRowKey" class="form-control" />
-                <span asp-validation-for="CityRowKey" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CountryRowKey" class="control-label">Country Row Key</label>
-                <input asp-for="CountryRowKey" class="form-control" />
+                <label asp-for="CountryRowKey" class="control-label">Country</label>
+                @* <input asp-for="CountryRowKey" class="form-control" /> *@
+                <select asp-for="CountryRowKey" class="form-control">
+                    <option value="">Select a country</option>
+					@foreach (var country in ViewBag.Countries)
+					{
+						<option value="@country.RowKey">@country.CountryName</option>
+                    }
+                </select>
                 <span asp-validation-for="CountryRowKey" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="CityRowKey" class="control-label">City</label>
+                @* <input asp-for="CityRowKey" class="form-control" /> *@
+                <select asp-for="CityRowKey" class="form-control">
+                    <option value="">Select a city</option>
+					@foreach (var city in ViewBag.Cities)
+					{
+                        <option value="@city.RowKey">@city.CityName</option>
+					}
+                </select>
+                <span asp-validation-for="CityRowKey" class="text-danger"></span>
+            </div>
+            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
