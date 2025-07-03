@@ -1,6 +1,7 @@
 ﻿using Azure.Data.Tables;
 using Azure.Storage.Blobs;
 using DeliverySytem.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeliverySytem.Controllers
@@ -42,10 +43,21 @@ namespace DeliverySytem.Controllers
                 ViewBag.ErrorMessage = "This email is already registered!";
                 return View();
             }
+
+            string confirmPassword = Request.Form["ConfirmPassword"];
+            if (customer.Password != confirmPassword)
+            {
+                ViewBag.ErrorMessage = "Passwords do not match!";
+                return View();
+            }
+
+            customer.Password = PasswordHasher.Hash(customer.Password);
             await tableClient.AddEntityAsync<Customer>(customer);
 
+            TempData["SuccessMessage"] = "Register is success!";
             return RedirectToAction("Login");
         }
+        // update Register
 
         [HttpGet]
         public IActionResult Login()
@@ -60,10 +72,12 @@ namespace DeliverySytem.Controllers
                 .FirstOrDefault();
             if (fromTable != null)
             {
+                TempData["SuccessMessage"] = "You have entered system!";//
                 HttpContext.Session.SetString("LoggedId", fromTable.RowKey);
                 HttpContext.Session.SetString("LoggedEmail", fromTable.Email);
                 return RedirectToAction("Index");
             }
+            ViewBag.ErrorMessage = "Wrong password or email!";//
             return View();
         }
     }
