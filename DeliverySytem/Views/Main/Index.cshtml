@@ -1,0 +1,25 @@
+﻿@model IEnumerable<DeliverySytem.Models.Product>
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Products</h1>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="card" style="width: 24rem;">
+            <img src="@item.PictureUrl" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@item.ProductName</h5>
+                <p class="card-text">@item.ProductDescription</p>
+                <p class="card-text">
+                    Price: @item.Price.ToString("C")
+                </p>
+				<a href="" class="btn btn-primary">Buy</a>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,47 @@
+﻿@model DeliverySytem.Models.Shop
+
+@{
+    ViewData["Title"] = "AddShop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Add shop</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddShop" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ShopName" class="control-label">Shop Name</label>
+                <input asp-for="ShopName" class="form-control" />
+                <span asp-validation-for="ShopName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Avatar</label>
+                <input type="file" name="AvatarUrl" class="form-control" />
+                <span asp-validation-for="AvatarUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CityRowKey" class="control-label">City Row Key</label>
+                <input asp-for="CityRowKey" class="form-control" />
+                <span asp-validation-for="CityRowKey" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryRowKey" class="control-label">Country Row Key</label>
+                <input asp-for="CountryRowKey" class="form-control" />
+                <span asp-validation-for="CountryRowKey" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
