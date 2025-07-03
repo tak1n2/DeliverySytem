@@ -5,9 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Register</h1>
 
-<h4>Customer</h4>
+<h4>Register</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -29,16 +28,34 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="CountryKey" class="control-label">Country</label>
+                <select asp-for="CountryKey" class="form-control" id="countrySelect"
+                        asp-items="ViewBag.Countries">
+                    <option value="">-- Select Country --</option>
+                </select>
+                <span asp-validation-for="CountryKey" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CityKey" class="control-label">City</label>
+                <select asp-for="CityKey" class="form-control" id="citySelect"
+                        asp-items="ViewBag.Cities">
+                    >
+                    <option value="">-- Select City --</option>
+                </select>
+                <span asp-validation-for="CityKey" class="text-danger"></span>
+            </div>
+            <div class="form-group m-2">
+                <input type="submit" value="Register" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Login">Already have an account?</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+<script>
+     
+</script>
