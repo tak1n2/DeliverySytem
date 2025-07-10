@@ -8,10 +8,12 @@ namespace DeliverySytem.Models
 		public string ShopName { get; set; }
 		public string AvatarUrl { get; set; }
 		public string CityRowKey { get; set; }
-		public string CountryRowKey { get; set; }
+		public City City { get; set; }
+        public string CountryRowKey { get; set; }
+        public Country Country { get; set; }
 
-		//
-		public string PartitionKey { get; set; }
+        //
+        public string PartitionKey { get; set; }
 		public string RowKey { get; set; }
 		public DateTimeOffset? Timestamp { get; set; }
 		public ETag ETag { get; set; }
