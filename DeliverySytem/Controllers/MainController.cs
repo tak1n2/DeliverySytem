@@ -25,7 +25,7 @@ namespace DeliverySytem.Controllers
             return View(products);
         }
 
-        public IActionResult Buy(string productName, int price, string shopKey)
+        public IActionResult Order(string productName, int price, string shopKey)
         {
             string? loggedId = HttpContext.Session.GetString("LoggedId");
             if (string.IsNullOrEmpty(loggedId))
@@ -33,15 +33,57 @@ namespace DeliverySytem.Controllers
                 return RedirectToAction("Login", "Register");
             }
 
-            Order order = new Order(loggedId, price);
-            tableClient.AddEntity(order);
+            Order? existingOrder = tableClient.Query<Order>(o =>
+                o.CustomerKey == loggedId &&
+                o.CreatedAt.Date == DateTime.UtcNow.Date
+            ).FirstOrDefault();
 
-            OrderLine orderLine = new OrderLine(order.RowKey, productName, price, shopKey);
+            if (existingOrder == null)
+            {
+                existingOrder = new Order(loggedId, 0);
+                tableClient.AddEntity(existingOrder);
+                existingOrder = tableClient.GetEntity<Order>(existingOrder.PartitionKey, existingOrder.RowKey).Value;
+            }
+            else
+            {
+                existingOrder = tableClient.GetEntity<Order>(existingOrder.PartitionKey, existingOrder.RowKey).Value;
+            }
+
+            OrderLine orderLine = new OrderLine(existingOrder.RowKey, productName, price, shopKey);
             tableClient.AddEntity(orderLine);
 
-            ViewBag.SuccessMessage = $"Order created for {productName}.";
+            existingOrder.TotalAmount += price;
+            tableClient.UpdateEntity(existingOrder, existingOrder.ETag, TableUpdateMode.Replace);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("OrderDetails");
+        }
+
+        public IActionResult OrderDetails()
+        {
+            string? loggedId = HttpContext.Session.GetString("LoggedId");
+            if (string.IsNullOrEmpty(loggedId))
+            {
+                return RedirectToAction("Login", "Register");
+            }
+
+            DateTime today = DateTime.UtcNow.Date;
+            DateTime tomorrow = today.AddDays(1);
+
+            Order todayOrder = tableClient.Query<Order>(o =>
+                o.CustomerKey == loggedId &&
+                o.CreatedAt >= today &&
+                o.CreatedAt < tomorrow
+            ).FirstOrDefault();
+
+            List<OrderLine> orderLines = new();
+
+            if (todayOrder != null)
+            {
+                orderLines = tableClient.Query<OrderLine>(l => l.OrderKey == todayOrder.RowKey).ToList();
+            }
+
+            ViewBag.Order = todayOrder;
+            return View("Order", orderLines);
         }
     }
 }

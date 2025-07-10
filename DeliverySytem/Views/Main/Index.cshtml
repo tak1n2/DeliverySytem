@@ -18,7 +18,7 @@
                 <p class="card-text">
                     Price: @item.Price.ToString("C")
                 </p>
-                <a asp-action="Buy"
+                <a asp-action="Order"
                    asp-route-productName="@item.ProductName"
                    asp-route-price="@item.Price"
                    asp-route-shopKey="@item.ShopKey"
@@ -27,3 +27,4 @@
         </div>
     }
 </div>
+
