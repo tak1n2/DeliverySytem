@@ -2,6 +2,8 @@
 using Azure.Storage.Blobs;
 using DeliverySytem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using System.Net;
 
 namespace DeliverySytem.Controllers
 {
@@ -77,6 +79,66 @@ namespace DeliverySytem.Controllers
 		{
 			return View();
 		}
+
+
+
+        [HttpPost]
+
+        public async Task<IActionResult> Buy()
+        {
+            var id = HttpContext.Session.GetString("LoggedId");
+
+            if(id == null)
+            {
+                RedirectToAction("Login", "Register");
+            }
+            try
+            {
+    
+                Order order = tableClient.Query<Order>(item => item.CustomerKey == id).FirstOrDefault();
+                if (order == null)
+                {
+                    return NotFound();
+                }
+
+                var ordersLine = tableClient.Query<OrderLine>(item => item.OrderKey == order.RowKey).ToList();
+
+                foreach (var item in ordersLine)
+                {
+                    var itemArhive = new OrderArchive(
+                        order.RowKey,
+                        item.ProductName,
+                        item.Price,
+                        item.ShopKey,
+                        order.CustomerKey);
+
+
+                    await tableClient.AddEntityAsync<OrderArchive>(itemArhive);
+
+
+
+
+                }
+
+                return Created();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+               
+            }
+          
+            
+
+
+
+          
+
+        }
+
+
+
 
 
 
