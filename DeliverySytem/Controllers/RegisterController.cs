@@ -27,9 +27,18 @@ namespace DeliverySytem.Controllers
             {
                 return RedirectToAction("Login");
             }
-            Customer cust = tableClient.
-                Query<Customer>(u => u.RowKey == loggedId).FirstOrDefault();
-            return View(cust);
+            var countries = tableClient.Query<Country>(filter: "PartitionKey eq 'Country'").ToList();
+            var cities = tableClient.Query<City>(filter: "PartitionKey eq 'City'").ToList();
+            Customer customer = tableClient.Query<Customer>(u => u.RowKey == loggedId).FirstOrDefault();
+
+            if (customer == null)
+            {
+                return NotFound("Customer not found.");
+            }
+            customer.Country = countries.FirstOrDefault(c => c.RowKey == customer.CountryKey);
+            customer.City = cities.FirstOrDefault(c => c.RowKey == customer.CityKey);
+
+            return View(customer);
         }
 
         [HttpGet]

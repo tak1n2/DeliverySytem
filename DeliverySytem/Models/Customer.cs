@@ -15,6 +15,9 @@ namespace DeliverySytem.Models
         public int TotalOrdersSum { get; set; }
         public DateTime CreatedAt { get; set; }
 
+        public Country Country { get; set; }
+        public City City { get; set; }
+
         public string PartitionKey { get; set; }
         public string RowKey { get; set; }
         public DateTimeOffset? Timestamp { get; set; }

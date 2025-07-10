@@ -84,13 +84,13 @@ namespace DeliverySytem.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> Buy()
+        public async Task<IActionResult> Buy() // main method to processing order
         {
             var id = HttpContext.Session.GetString("LoggedId");
 
             if(id == null)
             {
-                RedirectToAction("Login", "Register");
+                return RedirectToAction("Login", "Register");
             }
             try
             {
@@ -102,7 +102,7 @@ namespace DeliverySytem.Controllers
                 }
 
                 var ordersLine = tableClient.Query<OrderLine>(item => item.OrderKey == order.RowKey).ToList();
-
+                
                 foreach (var item in ordersLine)
                 {
                     var itemArhive = new OrderArchive(
@@ -113,14 +113,18 @@ namespace DeliverySytem.Controllers
                         order.CustomerKey);
 
 
-                    await tableClient.AddEntityAsync<OrderArchive>(itemArhive);
+                    await tableClient.AddEntityAsync<OrderArchive>(itemArhive); // Adding orderArchive item to table
 
 
 
 
                 }
 
-                return Created();
+                // TODO: next logic processing order
+
+
+
+                return Ok();
 
             }
             catch (Exception ex)
