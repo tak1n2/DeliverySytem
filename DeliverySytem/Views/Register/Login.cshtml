@@ -4,36 +4,47 @@
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-card-body">
+<h3 class="login-title">Log in</h3>
 
-<h4>Login</h4>
-<hr />
+@* <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Login">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-md-4"> *@
+        <form asp-action="Login" method="post" class="login-form">
+            <div asp-validation-summary="ModelOnly" class="login-error-summary"></div>
             
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+            
+            <div class="login-form-group">
+                <label asp-for="Email" class="login-form-label"></label>
+                <input asp-for="Email" class="login-form-control" placeholder="Enter your email">
+                <span asp-validation-for="Email" class="login-form-error"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="login-form-group">
+                <label asp-for="Password" class="login-form-label"></label>
+                <input asp-for="Password" type="password" class="login-form-control" placeholder="Enter your password">
+                <span asp-validation-for="Password" class="login-form-error"></span>
             </div>
-           
-           
-            <div class="form-group m-2">
-                <input type="submit" value="Login" class="btn btn-primary" />
-            </div>
+
+            <button type="submit" class="login-submit-btn">
+                <span class="login-btn-text">Login</span>
+                <svg class="login-btn-icon" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="currentColor" d="M10 17l5-5-5-5v10z" />
+                </svg>
+            </button>
+       
         </form>
+            <p class="link-text">
+                Don't have an account? <a asp-action="Register" class="link-action">Register here</a>
+            </p>
     </div>
 </div>
-
-<div>
-    <a asp-action="Register">Register here</a>
 </div>
+
+@* <div>
+    <a asp-action="Register">Register here</a>
+</div> *@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

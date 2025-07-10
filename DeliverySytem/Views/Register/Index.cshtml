@@ -5,41 +5,40 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Cabinet</h1>
 
-<h4>Customer</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+          
+            <div class="card shadow mt-3">
+                <div class="card-body">
+                    <h5 class="card-title-user-info">Personal information</h5>
+                    <div class="profile-user-info-container">
+                        <div class="info-item-user-info">
+                            <span class="profile-info-label-user">Name:</span>
+                            <span class="profile-info-value-user">@Model.Name </span>
+                        </div>
+                        
+                        <div class="info-item-user-info">
+                            <span class="profile-info-label-user">Email:</span>
+                            <span class="profile-info-value-user">@Model.Email</span>
+                        </div>
+                        <div class="info-item-user-info">
+                            <span class="profile-info-label-user">Registration date:</span>
+                            <span class="profile-info-value-user">@Model.CreatedAt.ToShortDateString()</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
            
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
